@@ -97,6 +97,9 @@
     inset: -10% -10% 10% -10%;
     background: radial-gradient(closest-side, rgba(109, 94, 252, .28), transparent 70%);
     z-index: 0;
+    /* The glow overhangs the hero above it; without this it eats the
+       Download button's clicks. */
+    pointer-events: none;
   }
 
   .mockup-wrap img {
@@ -206,7 +209,7 @@
   <section class="hero">
     <h1>TokenUsage</h1>
     <p class="tagline">A menu-bar app that tracks token usage across your AI coding agents by reading their local logs. No network calls, no API keys, nothing leaves your machine.</p>
-    <a id="download" class="download-btn" href="https://github.com/Alyetama/TokenUsage/releases/latest/download/TokenUsage.dmg" target="_blank" rel="noopener noreferrer">⬇︎ Download for macOS</a>
+    <a id="download" class="download-btn" href="https://github.com/Alyetama/TokenUsage/releases/latest/download/TokenUsage.dmg">⬇︎ Download for macOS</a>
   </section>
 
   <div class="mockup-wrap">
