@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TokenUsage</title>
+<meta name="description" content="A menu-bar app that tracks token usage across your AI coding agents by reading their local logs.">
+<style>
+  :root {
+    --bg-top: #0d0f1a;
+    --bg-bottom: #141829;
+    --surface: #1a1f33;
+    --surface-glass: rgba(26, 31, 51, .6);
+    --border: rgba(255, 255, 255, .08);
+    --text: #e8eaf2;
+    --muted: #a0a6c0;
+    --accent: #6d5efc;
+    --accent-grad: linear-gradient(120deg, #6d5efc, #9d7bff);
+    --radius: 16px;
+    --code-bg: #0f1320;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    background-image:
+      linear-gradient(180deg, var(--bg-top), var(--bg-bottom)),
+      radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size: auto, 22px 22px;
+    background-position: 0 0, 0 0;
+  }
+
+  main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .hero {
+    text-align: center;
+    padding: 96px 0 32px;
+    animation: fade-up .6s ease both;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    margin: 0 0 16px;
+    background: var(--accent-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -.02em;
+  }
+
+  .tagline {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 32px;
+  }
+
+  .download-btn {
+    display: inline-block;
+    background: var(--accent-grad);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    padding: 14px 32px;
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(109, 94, 252, .35);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+
+  .download-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(109, 94, 252, .45); }
+  .download-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .mockup-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 48px 0 72px;
+    animation: fade-up .8s ease both;
+  }
+
+  .mockup-wrap::before {
+    content: "";
+    position: absolute;
+    inset: -10% -10% 10% -10%;
+    background: radial-gradient(closest-side, rgba(109, 94, 252, .28), transparent 70%);
+    z-index: 0;
+  }
+
+  .mockup-wrap img {
+    position: relative;
+    z-index: 1;
+    max-width: 100%;
+    width: 640px;
+    border-radius: var(--radius);
+    box-shadow: 0 30px 60px rgba(0,0,0,.5);
+  }
+
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    padding-bottom: 64px;
+  }
+
+  .feature {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    width: 200px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.25);
+  }
+
+  .feature h3 {
+    margin: 0 0 6px;
+    font-size: .95rem;
+    color: var(--text);
+  }
+
+  .feature p {
+    margin: 0;
+    font-size: .85rem;
+    color: var(--muted);
+  }
+
+  #howto {
+    scroll-margin-top: 32px;
+    background: var(--surface-glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin: 0 0 72px;
+    transition: box-shadow .3s ease, border-color .3s ease;
+  }
+
+  #howto.flash {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(109, 94, 252, .35), 0 0 40px rgba(109, 94, 252, .3);
+  }
+
+  #howto h2 { margin-top: 0; font-size: 1.3rem; }
+  #howto h3 { font-size: 1rem; margin: 20px 0 6px; }
+  #howto p { color: var(--muted); margin: 0 0 8px; }
+  #howto code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: .85em;
+  }
+  #howto pre {
+    background: var(--code-bg);
+    padding: 14px 16px;
+    border-radius: 10px;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+  }
+  #howto pre code { background: none; padding: 0; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0 64px;
+    text-align: center;
+    color: var(--muted);
+    font-size: .9rem;
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  footer a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hero, .mockup-wrap { animation: none; }
+    .download-btn:hover { transform: none; }
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 64px 0 24px; }
+    .feature { width: 100%; max-width: 320px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <h1>TokenUsage</h1>
+    <p class="tagline">A menu-bar app that tracks token usage across your AI coding agents by reading their local logs. No network calls, no API keys, nothing leaves your machine.</p>
+    <a id="download" class="download-btn" href="https://github.com/Alyetama/TokenUsage/releases/latest/download/TokenUsage.dmg">⬇︎ Download for macOS</a>
+  </section>
+
+  <div class="mockup-wrap">
+    <img src="mockup.png" alt="TokenUsage screenshot">
+  </div>
+
+  <section class="features">
+    <div class="feature">
+      <h3>Menu-bar total</h3>
+      <p>Running token count, tap to expand per agent.</p>
+    </div>
+    <div class="feature">
+      <h3>Full dashboard</h3>
+      <p>Every agent and model, sorted by usage.</p>
+    </div>
+    <div class="feature">
+      <h3>Cost estimates</h3>
+      <p>Real cost where the agent records it, estimated otherwise.</p>
+    </div>
+    <div class="feature">
+      <h3>Local only</h3>
+      <p>Reads log files on disk. No network, no accounts.</p>
+    </div>
+  </section>
+
+  <section id="howto">
+    <h2>First launch (opening an unsigned app)</h2>
+    <p><strong>TokenUsage isn't signed with an Apple Developer ID</strong>, so macOS blocks it the first time you open it. This is expected — you only need to do one of the following once, and it opens normally afterward.</p>
+
+    <h3>1. Right-click to open</h3>
+    <p>In Finder, <strong>Control-click</strong> (or right-click) <code>TokenUsage</code>, choose <strong>Open</strong>, then click <strong>Open</strong> again in the dialog.</p>
+
+    <h3>2. If macOS still won't let you (newer versions)</h3>
+    <p>Open <strong>System Settings → Privacy &amp; Security</strong>, scroll down to the message about <code>TokenUsage</code> being blocked, and click <strong>Open Anyway</strong>. Confirm with <strong>Open Anyway</strong> (and Touch ID or your password if asked).</p>
+
+    <h3>3. Terminal fallback</h3>
+    <p>If neither works, remove the quarantine flag and open it normally:</p>
+    <pre><code>/usr/bin/xattr -dr com.apple.quarantine /Applications/TokenUsage.app</code></pre>
+    <p>(Adjust the path if you keep the app somewhere other than <code>/Applications</code>.)</p>
+  </section>
+</main>
+
+<footer>
+  <a href="https://github.com/Alyetama/TokenUsage">github.com/Alyetama/TokenUsage</a>
+  <br>
+  MIT © 2026 Alyetama
+</footer>
+
+<script>
+  document.getElementById('download').addEventListener('click', function () {
+    var howto = document.getElementById('howto');
+    howto.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    howto.classList.add('flash');
+    setTimeout(function () { howto.classList.remove('flash'); }, 2200);
+  });
+</script>
+</body>
+</html>
