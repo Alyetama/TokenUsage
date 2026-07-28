@@ -1,10 +1,17 @@
-First public release.
+Documentation accuracy pass, plus one corrected in-app message.
 
-- Menu-bar token total with per-agent breakdown
-- Full dashboard: every agent and model, sorted by usage
-- Today / 7 Days / 30 Days / All ranges
-- Cost estimates (real where the source records it)
-- Live updates driven by log-file changes
+- Antigravity is no longer described as an agent whose token usage is tracked.
+  It is detected when installed, but its conversation databases store every
+  payload as an opaque blob with no token, usage, or cost column, so no usage
+  can be read. The note shown in the app said the counts were kept server-side;
+  they are local but unreadable, and it now says so.
+- The input/output/cache split is documented where it actually renders: per
+  agent and for the running total. Per-model rows show total tokens and cost.
+- The "reads local files only" list now includes `~/.gemini`, which the
+  Antigravity scanner probes.
+- Added Limitations and Requirements sections to the README (macOS 14+).
+
+No change to scanning, aggregation, pricing, or the UI beyond that one message.
 
 ## First launch (opening an unsigned app)
 
