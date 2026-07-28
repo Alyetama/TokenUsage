@@ -22,7 +22,7 @@ final class AntigravityScanner: AgentScanner {
             kind: kind,
             installed: true,
             records: [],
-            note: "Detected. Antigravity keeps token usage server-side (Google account) — nothing readable locally."
+            note: "Detected. Antigravity stores token counts in an opaque format inside its local conversation logs, so no usage can be read."
         )
     }
 }
